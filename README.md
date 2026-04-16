@@ -1,1 +1,283 @@
 # tokyo3days
+
+<style>
+  .trip-wrap { font-family: var(--font-sans); padding: 1rem 0; max-width: 760px; }
+  .day-block { margin-bottom: 2rem; }
+  .day-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .day-badge { background: var(--color-background-info); color: var(--color-text-info); font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: var(--border-radius-md); white-space: nowrap; }
+  .day-title { font-size: 17px; font-weight: 500; color: var(--color-text-primary); }
+  .day-sub { font-size: 13px; color: var(--color-text-secondary); margin-left: auto; }
+  .timeline { position: relative; padding-left: 20px; }
+  .timeline::before { content: ''; position: absolute; left: 6px; top: 4px; bottom: 4px; width: 1.5px; background: var(--color-border-secondary); }
+  .tl-item { position: relative; margin-bottom: 12px; }
+  .tl-dot { position: absolute; left: -17px; top: 6px; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--color-border-primary); background: var(--color-background-primary); }
+  .tl-dot.transport { border-color: #185FA5; background: #E6F1FB; }
+  .tl-dot.food { border-color: #0F6E56; background: #E1F5EE; }
+  .tl-dot.sightseeing { border-color: #853B06; background: #FAEEDA; }
+  .tl-dot.hotel { border-color: #534AB7; background: #EEEDFE; }
+  .tl-dot.misc { border-color: #888780; background: #F1EFE8; }
+  .tl-dot.alert { border-color: #A32D2D; background: #FCEBEB; }
+  .tl-content { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 10px 14px; }
+  .tl-time { font-size: 11px; color: var(--color-text-tertiary); font-weight: 500; margin-bottom: 2px; }
+  .tl-main { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+  .tl-detail { font-size: 12.5px; color: var(--color-text-secondary); margin-top: 4px; line-height: 1.6; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 20px; margin-right: 4px; margin-top: 3px; font-weight: 500; }
+  .tag-tr { background: #E6F1FB; color: #0C447C; }
+  .tag-food { background: #E1F5EE; color: #085041; }
+  .tag-see { background: #FAEEDA; color: #633806; }
+  .tag-free { background: #EAF3DE; color: #27500A; }
+  .tag-warn { background: #FCEBEB; color: #791F1F; }
+  .hotel-card { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px 16px; margin: 1rem 0 1.5rem; }
+  .hotel-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+  .hotel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
+  .hotel-item { font-size: 12.5px; color: var(--color-text-secondary); }
+  .hotel-item strong { color: var(--color-text-primary); font-weight: 500; }
+  .hotel-star { color: #BA7517; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 1.5rem; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--color-text-secondary); }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
+  .tl-dot.checkin { border-color: #534AB7; background: #EEEDFE; }
+</style>
+
+<div class="trip-wrap">
+  <div style="margin-bottom: 1.5rem;">
+    <div style="font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px;">도쿄 가족여행 · 3일 일정</div>
+    <div style="font-size: 13px; color: var(--color-text-secondary);">2025년 5월 8일(목) – 5월 10일(토) · 4인 가족</div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#E6F1FB; border: 1.5px solid #185FA5;"></div> 이동/교통</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E1F5EE; border: 1.5px solid #0F6E56;"></div> 식사</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FAEEDA; border: 1.5px solid #853B06;"></div> 관광</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#EEEDFE; border: 1.5px solid #534AB7;"></div> 숙소</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FCEBEB; border: 1.5px solid #A32D2D;"></div> 주의사항</div>
+  </div>
+
+  <div class="day-block">
+    <div class="day-header">
+      <div class="day-badge">Day 1</div>
+      <div class="day-title">오다이바 도착 & 야경</div>
+      <div class="day-sub">5월 8일(목)</div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot alert"></div>
+        <div class="tl-content">
+          <div class="tl-time">04:00</div>
+          <div class="tl-main">집 출발</div>
+          <div class="tl-detail">공항 최소 2시간 전 도착 필요 → 06:00 김해공항 도착 목표</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot transport"></div>
+        <div class="tl-content">
+          <div class="tl-time">07:50 → 10:00</div>
+          <div class="tl-main">✈ 김해 → 나리타 · 에어부산 BX0112</div>
+          <div class="tl-detail">위탁수하물 15kg 제한 <span class="tag tag-warn">수하물 주의</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot misc"></div>
+        <div class="tl-content">
+          <div class="tl-time">10:30</div>
+          <div class="tl-main">나리타 가족 집결 (1시간)</div>
+          <div class="tl-detail">수하물 찾기 · 스이카 교통카드 구매</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot transport"></div>
+        <div class="tl-content">
+          <div class="tl-time">11:30</div>
+          <div class="tl-main">클룩 픽업 (공항→숙소)</div>
+          <div class="tl-detail">이동 약 1시간 30분 소요 예상</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot hotel"></div>
+        <div class="tl-content">
+          <div class="tl-time">13:00</div>
+          <div class="tl-main">숙소 도착 · 짐 프런트 보관</div>
+          <div class="tl-detail">체크인 15:00 → 짐 맡기고 먼저 점심 이동</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot food"></div>
+        <div class="tl-content">
+          <div class="tl-time">13:30</div>
+          <div class="tl-main">점심 · 도요스 만요 클럽</div>
+          <div class="tl-detail"><span class="tag tag-food">식사</span> 이후 도요스 구루리 공원 산책 <span class="tag tag-free">무료</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot hotel"></div>
+        <div class="tl-content">
+          <div class="tl-time">15:00</div>
+          <div class="tl-main">숙소 체크인 · 휴식</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot sightseeing"></div>
+        <div class="tl-content">
+          <div class="tl-time">16:00</div>
+          <div class="tl-main">오다이바 관광</div>
+          <div class="tl-detail">
+            다이바시티 유니콘 건담 <span class="tag tag-free">무료</span><br>
+            아쿠아시티 자유의여신상 (포토스팟)<br>
+            아쿠아시티 다이바 잇쵸메 상점가 (1950년대 재현 상점가)
+          </div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot food"></div>
+        <div class="tl-content">
+          <div class="tl-time">18:00</div>
+          <div class="tl-main">저녁식사</div>
+          <div class="tl-detail"><span class="tag tag-food">식사</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot sightseeing"></div>
+        <div class="tl-content">
+          <div class="tl-time">18:30 – 20:00</div>
+          <div class="tl-main">야경 코스</div>
+          <div class="tl-detail">
+            후지테레비 중간전망대 <span class="tag tag-free">무료 · 20:00 마감</span><br>
+            아쿠아시티 해변공원 · 레인보우브릿지 야경
+          </div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot hotel"></div>
+        <div class="tl-content">
+          <div class="tl-time">20:00</div>
+          <div class="tl-main">숙소 복귀</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="day-block">
+    <div class="day-header">
+      <div class="day-badge">Day 2</div>
+      <div class="day-title">자유 일정</div>
+      <div class="day-sub">5월 9일(금)</div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot food"></div>
+        <div class="tl-content">
+          <div class="tl-time">07:00</div>
+          <div class="tl-main">호텔 조식 (뷔페)</div>
+          <div class="tl-detail">매일 06:00~09:30 운영 · 유료</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot sightseeing"></div>
+        <div class="tl-content">
+          <div class="tl-time">오전 중</div>
+          <div class="tl-main">하마리큐 은사정원</div>
+          <div class="tl-detail">조류 보호구역이자 도쿄의 대표 전통 정원 <span class="tag tag-see">관광</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot food"></div>
+        <div class="tl-content">
+          <div class="tl-time">오전 중</div>
+          <div class="tl-main">나카지마 티하우스</div>
+          <div class="tl-detail">하마리큐 내 연못 위 찻집 · 말차 체험 <span class="tag tag-food">다도</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot misc"></div>
+        <div class="tl-content">
+          <div class="tl-time">오후</div>
+          <div class="tl-main">미정 · 자유 일정</div>
+          <div class="tl-detail">팀랩 플래닛츠 (숙소 700m), 도요스 시장 등 추가 가능</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="day-block">
+    <div class="day-header">
+      <div class="day-badge">Day 3</div>
+      <div class="day-title">귀국</div>
+      <div class="day-sub">5월 10일(토)</div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot food"></div>
+        <div class="tl-content">
+          <div class="tl-time">07:00</div>
+          <div class="tl-main">호텔 조식</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot hotel"></div>
+        <div class="tl-content">
+          <div class="tl-time">07:30</div>
+          <div class="tl-main">체크아웃 · 숙소 출발</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot transport"></div>
+        <div class="tl-content">
+          <div class="tl-time">07:40</div>
+          <div class="tl-main">클룩 샌딩 (숙소→나리타)</div>
+          <div class="tl-detail">이동 약 1시간 20분 소요 예상</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot alert"></div>
+        <div class="tl-content">
+          <div class="tl-time">09:00</div>
+          <div class="tl-main">나리타 공항 도착</div>
+          <div class="tl-detail">출발 2시간 전 도착 · 탑승 수속 및 출국심사 <span class="tag tag-warn">공항 여유 확인</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot transport"></div>
+        <div class="tl-content">
+          <div class="tl-time">10:55 → 13:15</div>
+          <div class="tl-main">✈ 나리타 → 김해 · 에어부산 BX0111</div>
+          <div class="tl-detail">위탁수하물 15kg 제한 <span class="tag tag-warn">수하물 주의</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="hotel-card">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+      <div style="width:36px;height:36px;border-radius:50%;background:#EEEDFE;display:flex;align-items:center;justify-content:center;font-size:16px;">🏨</div>
+      <div>
+        <div class="hotel-title" style="margin-bottom:0;">라 비스타 도쿄베이 (La Vista Tokyo Bay)</div>
+        <div style="font-size:12px; color:var(--color-text-secondary);">오다이바 · 도쿄 고토구 도요스 6-4-40</div>
+      </div>
+      <div style="margin-left:auto;font-size:13px;" class="hotel-star">★★★★ 4성급</div>
+    </div>
+    <div class="hotel-grid">
+      <div class="hotel-item"><strong>체크인</strong> 15:00 ~ 23:30</div>
+      <div class="hotel-item"><strong>체크아웃</strong> ~ 11:00</div>
+      <div class="hotel-item"><strong>객실</strong> 쿼드룸 (4인)</div>
+      <div class="hotel-item"><strong>조식</strong> 뷔페 06:00~09:30 (유료)</div>
+      <div class="hotel-item"><strong>가까운 역</strong> 시조마에 역 도보 4~5분</div>
+      <div class="hotel-item"><strong>Wi-Fi</strong> 전 객실 무료</div>
+      <div class="hotel-item"><strong>온천</strong> 19층 천연 온천 (도쿄타워·스카이트리 뷰)</div>
+      <div class="hotel-item"><strong>수영장</strong> 실내 수영장 (유료)</div>
+      <div class="hotel-item"><strong>레스토랑</strong> RESTAURANT SACHI (프렌치, 바다 전망)</div>
+      <div class="hotel-item"><strong>부대시설</strong> 사우나, 아로마 스파, 피트니스</div>
+      <div class="hotel-item"><strong>짐 보관</strong> 체크인 전후 가능</div>
+      <div class="hotel-item"><strong>주차</strong> ¥2,200/일 (유료)</div>
+    </div>
+    <div style="margin-top:10px; padding-top:10px; border-top:0.5px solid var(--color-border-tertiary); font-size:12px; color:var(--color-text-secondary);">
+      💡 온천 이용 시 문신 있는 경우 입장 불가 · 도시세 별도 부과 (1인/1박 ¥100~) · 여권 지참 필수
+    </div>
+  </div>
+</div>
